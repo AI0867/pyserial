@@ -644,12 +644,15 @@ class Miniterm(object):
         else:
             sys.stderr.write('--- unknown menu character {} --\n'.format(key_description(c)))
 
+    def prompt_user(self, prompt):
+        sys.stderr.write(prompt)
+        sys.stderr.flush()
+        return sys.stdin.readline().rstrip('\r\n')
+
     def upload_file(self):
         """Ask user for filename and send its contents"""
-        sys.stderr.write('\n--- File to upload: ')
-        sys.stderr.flush()
         with self.console:
-            filename = sys.stdin.readline().rstrip('\r\n')
+            filename = self.prompt_user('\n--- File to upload: ')
             if filename:
                 try:
                     with open(filename, 'rb') as f:
